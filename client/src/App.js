@@ -9,6 +9,7 @@ import Success from './components/success.jsx';
 import Failure from './components/failure.jsx';
 import AdminDashBoard from './components/adminDashBoard.jsx';
 import DashBoardLayout from './components/DashboardLayout.jsx';
+import AdminLayout from './components/AdminLayout.jsx';
 
 const router = createBrowserRouter([
    {
@@ -21,19 +22,19 @@ const router = createBrowserRouter([
    },
    {
     path:'/allEvents',
-    element: <AllEvents/>
+    element: <DashBoardLayout title={'allEvents'}><AllEvents/></DashBoardLayout>
    },
    {
     path:'/datepicker/:eventId',
-    element: <DatepickerApp/>
+    element: <DashBoardLayout title={'Datepicker'}> <DatepickerApp/></DashBoardLayout>
    },
    {
     path:'/datepicker/continueBooking',
-    element: <FinalDetailsPage/>
+    element: <DashBoardLayout title={'finalDetails'}> <FinalDetailsPage/></DashBoardLayout>
    },
    {
     path:'/success' ,
-    element: <Success/>
+    element: <DashBoardLayout title={'success'} > <Success/></DashBoardLayout>
    },
    {
     path: '/failure',
@@ -41,7 +42,7 @@ const router = createBrowserRouter([
    },
    {
     path:'/adminDashBoard',
-    element: <DashBoardLayout title={'adminDashboard'}><AdminDashBoard/></DashBoardLayout>
+    element: <AdminLayout title={'adminDashboard'}><AdminDashBoard/></AdminLayout>
    }
 ])
 

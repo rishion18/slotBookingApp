@@ -1,20 +1,24 @@
 import React, { useState } from 'react';
 import { useSelector , useDispatch } from 'react-redux';
-import { setUserEventsRenderList } from '../store/eventReducers';
+import { setDisplayItems, setUserEventsRenderList } from '../store/eventReducers';
 
-const SearchForm = ({displayItems}) => {
+const SearchForm = () => {
 
   const dispatch = useDispatch();
 
   const{userEvents} = useSelector((state) => state.Events);
   const{userCurrentPage} = useSelector((state) => state.Events);
 
+
   const handleSearchFilter = (searchInput) => {
     const lowerCaseSearchInput = searchInput.toLowerCase();
+    const itemsPerPage = 3
     
     if (lowerCaseSearchInput.trim() === '') {
       // If the searchInput is empty, call displayItems to render items based on the userCurrentPage
-      displayItems(userCurrentPage);
+      const itemsPerPage = 3
+      dispatch(setDisplayItems({currentPage: userCurrentPage , itemsPerPage}));
+
     } else {
       // If there is a search input, filter the events and update the userEventsRenderList in the Redux store
       const filteredRes = userEvents.filter((event) => event.eventName.toLowerCase().includes(lowerCaseSearchInput));

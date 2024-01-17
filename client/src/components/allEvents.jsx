@@ -1,31 +1,62 @@
 import { useEffect, useState } from "react";
 import EventCard from "./eventCard";
-import SearchForm from "./SearchForm";
-import { setUserCurrentPage, setUserEvents, setUserEventsRenderList } from "../store/eventReducers.js";
+import { setCurrentUser, setDisplayItems, setUserCurrentPage, setUserEvents, setUserEventsRenderList } from "../store/eventReducers.js";
 import { useSelector , useDispatch } from "react-redux";
 
 const AllEvents = () => {
 
 const[currentPage , setCurrentPage] = useState(1)
 const dispatch = useDispatch();
+
+const itemsPerPage = 3;
+
  
-  const fetchAllEvents = async() => {
-    fetch(`http://localhost:5000/api/event/getAllEvents`)
-    .then(res => res.json())
-    .then(data => dispatch(setUserEvents(data)));
-}
+const fetchAllEvents = async () => {
+  try {
+    const response = await fetch(`http://localhost:5000/api/event/getAllEvents`);
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch events');
+    }
+
+    const data = await response.json();
+
+    dispatch(setUserEvents(data));
+    dispatch(setDisplayItems({currentPage , itemsPerPage}))
+
+  } catch (error) {
+    console.error('Error fetching events:', error.message);
+  }
+};
+
+const{currentUserEmail , currentSessionToken} = useSelector(state => state.Events);
+console.log(`on evnt page : ${currentSessionToken}`);
+
+const fetchUser = async() => {
+  fetch(`http://localhost:5000/api/user/getUser` , {
+    method:'POST',
+    body: JSON.stringify({
+      email: currentUserEmail
+    }),
+    headers:{
+      'Content-Type':'application/json',
+      'Authorization': `Bearer ${currentSessionToken}`
+    },
+  })
+  .then(res => res.json())
+  .then(data => dispatch(setCurrentUser(data)))
+ }
+
 
 useEffect(() => {
     fetchAllEvents();
-    displayItems(currentPage);
+    fetchUser()
 } , [])
 
 
 const{userEvents} = useSelector((state) => state.Events);
-const{userCurrentPage} = useSelector((state) => state.Events);
-console.log(userCurrentPage);
 
-const itemsPerPage = 3;
+
 const totalButtons = userEvents.length/itemsPerPage
 
 const getPageNumbers = () => {
@@ -43,7 +74,7 @@ const pagesNeeded = getPageNumbers();
 const handlePrevClick = () => {
     setCurrentPage((prevPage) => {
       const newPage = prevPage - 1;
-      displayItems(newPage);
+      dispatch(setDisplayItems({currentPage:newPage , itemsPerPage}));
       dispatch(setUserCurrentPage(newPage))
       return newPage;
     });
@@ -52,7 +83,7 @@ const handlePrevClick = () => {
   const handleNextClick = () => {
     setCurrentPage((prevPage) => {
       const newPage = prevPage + 1;
-      displayItems(newPage);
+      dispatch(setDisplayItems({currentPage:newPage , itemsPerPage}));
       dispatch(setUserCurrentPage(newPage))
       return newPage;
     });
@@ -60,19 +91,11 @@ const handlePrevClick = () => {
   
 
 const handlePageClick = (page) => {
-  displayItems(page);
+  dispatch(setDisplayItems({currentPage:page , itemsPerPage}));
   setCurrentPage(page);
   dispatch(setUserCurrentPage(page))
 }
 
-
-
-const displayItems =  (currentPage) => {
-    const startIndex = (currentPage - 1)*itemsPerPage
-    const endIndex = startIndex + itemsPerPage
-    const currItems = userEvents.slice(startIndex , endIndex);
-    dispatch(setUserEventsRenderList(currItems));
-}
 
 const{userEventsRenderList} = useSelector((state) => state.Events);
 
@@ -80,9 +103,7 @@ const{userEventsRenderList} = useSelector((state) => state.Events);
     return(
     <div className="flex flex-col justify-between w-screen">
       <div className="flex flex-col w-screen h-auto">
-            <div className="w-screen bg-blue-500 text-white h-auto flex justify-center items-center">
-              <SearchForm displayItems={displayItems}/>
-            </div>
+
             <div className="grid grid-cols-5 gap-4 m-10">
                 {
                     userEventsRenderList?.map((item) => <EventCard key={item._id} item={item}/>)

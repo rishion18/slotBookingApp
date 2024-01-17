@@ -41,3 +41,15 @@ export const userLogin = async(req , res) => {
         res.status(500).send({status: false , message: e.message});
     }
 }
+
+export const getUser = async(req , res) => {
+   try{
+    const {email} = req.body;
+    const user = await users.findOne({email: email.toLowerCase()})
+    if(user){
+      res.status(200).send(user);
+    }
+   }catch(e){
+    res.status(500).send(e.message)
+   }
+}

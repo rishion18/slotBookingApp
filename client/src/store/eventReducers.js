@@ -12,7 +12,9 @@ const EventReducerSlice = createSlice({
         currentSessionToken:'',
         userEvents:[],
         userEventsRenderList:[] , 
-        userCurrentPage:1
+        userCurrentPage:1,
+        currentUser:'',
+        currentUserEmail:""
     },
     reducers:{
         setAllEvents:(state , action) => {
@@ -57,16 +59,49 @@ const EventReducerSlice = createSlice({
     },
     setUserCurrentPage:(state , action) => {
         state.userCurrentPage = action.payload;
+    },
+    setCurrentUser:(state , action) => {
+        state.currentUser = action.payload
+    },
+    setCurrentUserEmail:(state , action) => {
+        state.currentUserEmail = action.payload
+    },
+    setDisplayItems: (state, action) => {
+        const { currentPage, itemsPerPage } = action.payload;
+        const startIndex = (currentPage - 1) * itemsPerPage;
+        const endIndex = startIndex + itemsPerPage;
+        const currItems = state.userEvents?.slice(startIndex, endIndex);
+        state.userEventsRenderList = currItems;
     }
-    
-    
     
 
     }
 })
 
-export const {setAllEvents , setSelectedSlots , setTotalAmount , manageTotalAmount ,
-     setCurrentEventId , setCart , setSessionToken , setUserEvents , setUserEventsRenderList,
-    setUserCurrentPage} = EventReducerSlice.actions;
+// export const displayItems =  (state , currentPage , itemsPerPage) => {
+//    return async(dispatch) => {
+//     const startIndex = (currentPage - 1)*itemsPerPage
+//     const endIndex = startIndex + itemsPerPage
+//     const currItems = state.userEvents?.slice(startIndex , endIndex);
+//     dispatch(setUserEventsRenderList(currItems));
+//    }
+// }
+
+export const { 
+                setAllEvents ,
+                setSelectedSlots ,
+                setTotalAmount , 
+                manageTotalAmount ,
+                setCurrentEventId , 
+                setCart , 
+                setSessionToken , 
+                setUserEvents , 
+                setUserEventsRenderList,
+                setUserCurrentPage , 
+                setCurrentUser , 
+                setCurrentUserEmail,
+                setDisplayItems
+
+            } = EventReducerSlice.actions; 
 
 export default EventReducerSlice.reducer;

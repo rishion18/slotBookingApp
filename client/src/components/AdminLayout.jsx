@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import SearchForm from "./SearchForm";
 
-const DashBoardLayout = ({children , title}) => {
+const AdminLayout = ({children , title}) => {
 
 const{currentUser} = useSelector((state) => state.Events);
 
@@ -21,4 +21,4 @@ return(
 )
 }
 
-export default DashBoardLayout;
+export default AdminLayout;

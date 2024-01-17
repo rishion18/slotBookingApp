@@ -1,7 +1,7 @@
-import { useState , useEffect } from "react";
+import { useState } from "react";
 import { Link , useNavigate } from "react-router-dom"
-import { setAllEvents, setSessionToken } from "../store/eventReducers";
-import { useDispatch } from "react-redux";
+import { setCurrentUserEmail, setSessionToken } from "../store/eventReducers";
+import { useDispatch} from "react-redux";
 
 
 export default function SignInRegistration() {
@@ -23,6 +23,7 @@ export default function SignInRegistration() {
      setRole(role);
   }
 
+
   const handleSignIn = async (e, email, password) => {
     e.preventDefault();
     try {
@@ -37,6 +38,10 @@ export default function SignInRegistration() {
           'Content-Type': 'application/json',
         },
       });
+
+      if(response){
+        dispatch(setCurrentUserEmail(email))
+      }
   
       const data = await response.json();
       if (!data.status) {
@@ -48,12 +53,14 @@ export default function SignInRegistration() {
       navigate('/adminDashBoard');
       return;
      }
-     
+     dispatch(setSessionToken(data.token))
      navigate('/allEvents')
     } catch (error) {
       console.error('Error during sign-in:', error.message);
     }
   };
+
+
 
   const dispatch = useDispatch() 
 

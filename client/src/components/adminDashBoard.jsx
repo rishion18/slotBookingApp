@@ -1,11 +1,14 @@
 import { useState , useEffect} from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setCurrentUser } from "../store/eventReducers";
 
 const AdminDashBoard =  () => {
 
   const[display , setDisplay] = useState(false);
 
   const[allEvents , setAllEvents] = useState([])
+
+  const dispatch = useDispatch();
  
   const fetchAllEvents = async() => {
     fetch(`http://localhost:5000/api/event/getAllEvents`)
@@ -40,7 +43,27 @@ useEffect(() => {
   }
 
   const {currentSessionToken} = useSelector((state) => state.Events);
-  console.log(currentSessionToken)
+  const {currentUserEmail} = useSelector((state) => state.Events);
+
+
+  const fetchUser = async() => {
+    fetch(`http://localhost:5000/api/user/getUser` , {
+      method:'POST',
+      body: JSON.stringify({
+        email: currentUserEmail
+      }),
+      headers:{
+        'Content-Type':'application/json',
+        'Authorization': `Bearer ${currentSessionToken}`
+      },
+    })
+    .then(res => res.json())
+    .then(data => dispatch(setCurrentUser(data)))
+   }
+
+   useEffect(() => {
+    fetchUser()
+   } , [])
 
 
   const handleSubmitEvent = (e) => {
