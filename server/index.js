@@ -12,7 +12,7 @@ config();
 const app = express();
 
 app.use(cors({
-    origin: `${REACT_APP_FRONTEND_URL}`,
+    origin: `${process.env.REACT_APP_FRONTEND_URL}`,
     credentials: true,
 }));
 app.use(express.json());
