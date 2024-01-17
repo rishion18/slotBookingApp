@@ -22,12 +22,15 @@ app.use('/api/user', userRoutes);
 app.use('/api/event' , eventRoutes);
 app.use('/api/payment' , paymentRoutes);
 
+const PORT = process.env.PORT || 5000;
+
+
 app.use('*' , (req , res) => {
-res.status(500).send('Page not found');
+res.status(500).send('Default page says hello!');
 });
 
 
-app.listen('5000' , async() => {
+app.listen(PORT , async() => {
     await connectToDatabase();
     console.log('listening at http://localhost:5000');
 })
