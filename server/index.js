@@ -12,7 +12,7 @@ config();
 const app = express();
 
 app.use(cors({
-    origin: 'http://localhost:3000',
+    origin: `${REACT_APP_FRONTEND_URL}`,
     credentials: true,
 }));
 app.use(express.json());
@@ -32,5 +32,5 @@ res.status(500).send('Default page says hello!');
 
 app.listen(PORT , async() => {
     await connectToDatabase();
-    console.log('listening at http://localhost:5000');
+    console.log(`listening at ${PORT}`);
 })
