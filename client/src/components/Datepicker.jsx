@@ -26,7 +26,7 @@ setValue(newValue);
 
 const{startDate , endDate} = newValue;
 
-fetch(`${REACT_APP_BACKEND_URL}/api/event/datepicker/${eventId}`,{
+fetch(`${process.env.REACT_APP_BACKEND_URL}/api/event/datepicker/${eventId}`,{
     method:'POST',
     body: JSON.stringify({
        startDate,

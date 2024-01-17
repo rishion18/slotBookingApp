@@ -28,7 +28,7 @@ export default function Registration() {
 
   const handleRegistration = (e) => {
     e.preventDefault()
-    fetch(`${REACT_APP_BACKEND_URL}/api/user/userRegister` , {
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/api/user/userRegister` , {
       method: 'POST',
       body:JSON.stringify({
         fullName:name,

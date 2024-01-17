@@ -27,7 +27,7 @@ export default function SignInRegistration() {
   const handleSignIn = async (e, email, password) => {
     e.preventDefault();
     try {
-      const response = await fetch(`${REACT_APP_BACKEND_URL}/api/user/userLogin`, {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/user/userLogin`, {
         method: 'POST',
         body: JSON.stringify({
           email,
