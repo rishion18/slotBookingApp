@@ -13,7 +13,7 @@ const itemsPerPage = 3;
  
 const fetchAllEvents = async () => {
   try {
-    const response = await fetch(`http://localhost:5000/api/event/getAllEvents`);
+    const response = await fetch(`${REACT_APP_BACKEND_URL}/api/event/getAllEvents`);
 
     if (!response.ok) {
       throw new Error('Failed to fetch events');
@@ -33,7 +33,7 @@ const{currentUserEmail , currentSessionToken} = useSelector(state => state.Event
 console.log(`on evnt page : ${currentSessionToken}`);
 
 const fetchUser = async() => {
-  fetch(`http://localhost:5000/api/user/getUser` , {
+  fetch(`${REACT_APP_BACKEND_URL}/api/user/getUser` , {
     method:'POST',
     body: JSON.stringify({
       email: currentUserEmail

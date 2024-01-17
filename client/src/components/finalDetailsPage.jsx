@@ -13,7 +13,7 @@ const FinalDetailsPage = () => {
 
 
 const getEventById = () => {
-  fetch(`http://localhost:5000/api/event/getEventById` , {
+  fetch(`${REACT_APP_BACKEND_URL}/api/event/getEventById` , {
     method: 'POST',
     body: JSON.stringify({
         eventId: currentEventId
@@ -47,7 +47,7 @@ const getEventById = () => {
         const headers = {
             "Content-Type":"application/json"
         }
-        const response = await fetch(`http://localhost:5000/api/payment/create-checkout-session` , {
+        const response = await fetch(`${REACT_APP_BACKEND_URL}/api/payment/create-checkout-session` , {
             method:'POST',
             headers: headers,
             body :JSON.stringify(body)

@@ -11,7 +11,7 @@ const AdminDashBoard =  () => {
   const dispatch = useDispatch();
  
   const fetchAllEvents = async() => {
-    fetch(`http://localhost:5000/api/event/getAllEvents`)
+    fetch(`${REACT_APP_BACKEND_URL}/api/event/getAllEvents`)
     .then(res => res.json())
     .then(data => setAllEvents(data));
 }
@@ -47,7 +47,7 @@ useEffect(() => {
 
 
   const fetchUser = async() => {
-    fetch(`http://localhost:5000/api/user/getUser` , {
+    fetch(`${REACT_APP_BACKEND_URL}/api/user/getUser` , {
       method:'POST',
       body: JSON.stringify({
         email: currentUserEmail
@@ -69,7 +69,7 @@ useEffect(() => {
   const handleSubmitEvent = (e) => {
     e.preventDefault();
 
-    fetch(`http://localhost:5000/api/event/addEvent` , {
+    fetch(`${REACT_APP_BACKEND_URL}/api/event/addEvent` , {
       method: 'POST',
       body: JSON.stringify({
         eventName : eventName,
